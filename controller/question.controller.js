@@ -116,7 +116,10 @@ async function getQuestionsByTestId(req, res) {
     if (!testDisabled.rows[0].is_published) {
       return res.json([]);
     }
-   
+    const { rows } = await pool.query(
+      `SELECT * FROM questions WHERE test_id = $1 ORDER BY RANDOM();`,
+      [testId]
+    );
 
     res.json(rows);
   } catch (error) {
